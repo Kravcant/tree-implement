@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Traversal {
   public static void main(String[] args) {
     TreeNode<Integer> root = new TreeNode<>(10, null, null);
@@ -14,11 +17,16 @@ public class Traversal {
     stringRoot.left = new TreeNode<>("how", null, null);
     stringRoot.left.left = new TreeNode<>("are", null, null);
     stringRoot.left.right = new TreeNode<>("you", null, null);
+    stringRoot.right = new TreeNode<>("hello", null, null);
+    stringRoot.right.left = new TreeNode<>("I'm", null, null);
+    stringRoot.right.right = new TreeNode<>("good", null, null);
+
 
 
     // postorder(root);
     // printGreater(root, 4);
-    System.out.println(countNodes(root));
+    // System.out.println(countNodes(root));
+    System.out.println(toMap(stringRoot));
   }
 
   public static int countNodes(TreeNode<?> node) {
@@ -31,6 +39,22 @@ public class Traversal {
     if (node.value > threshold) System.out.println(node.value);
     printGreater(node.left, threshold);
     printGreater(node.right, threshold);
+  }
+
+  private static <T> void toMap(TreeNode<T> node, Map<T, Integer> counts) {
+    if (node == null) {
+      return;
+    }
+    // fill up those counts
+    counts.put(node.value, counts.getOrDefault(node.value, 0) + 1);
+    toMap(node.left, counts);
+    toMap(node.right, counts);
+  }
+
+  public static <T> Map<T, Integer> toMap(TreeNode<T> node) {
+    Map<T, Integer> counts = new HashMap<>();
+    toMap(node, counts);
+    return counts;
   }
 
   // print a tree rooted at the given node in pre-order
